@@ -28,6 +28,11 @@ bool FileExists(const char* filename);//Checking if the file exists
 int Logging_In(Login user);//Making login file with all the passwords/username
 
 void LoginFile();//File used 
+void PassengerFile();//Setting up passenger file if needed
+
+
+Passenger GetPassengerInfo();//Inputting user info by user
+Passenger ShowAllPassenger();//Showing all passengers to user
 
 
 
@@ -38,6 +43,10 @@ int main()
 	if (!FileExists("login.txt")) 
 	{
 		LoginFile();
+	}
+	if (!FileExists("passenger.txt"))
+	{ 
+		PassengerFile(); 
 	}
 
 	int count = 0;
@@ -83,6 +92,25 @@ int main()
 		printf("8. Display all passengers by date of birth\n");
 		printf("-1. End protocol\n");
 		scanf_s("%d", &choice);
+
+		switch (choice)//Asking all questions for user this will be main thing utilised by them
+		{
+
+		case 1:
+			GetPassengerInfo();
+			break;
+		case 2:
+			ShowAllPassenger();
+			break;
+		case -1:
+			printf("\n\nEnding protocol\n");
+			break;
+
+		default:
+
+			printf("\n\n Invalid input try again \n");
+			break;//Making sure if user inputs incorrect input it will continue
+		}
 	}
 }
 
@@ -111,7 +139,23 @@ void LoginFile()
 		fprintf(fp, "Manager ManagerP\n");
 		fprintf(fp, "Employee EmployeeP\n");
 	}
+	fclose(fp);
 	return;
+
+}
+
+void PassengerFile()
+{
+	FILE* fp = fopen("passenger.txt", "w");//Writing into the login file to add stuff
+
+	if (fp == NULL) {
+		printf("Error opening file!\n");//Closing if error occurs
+
+		return 0;
+	}
+	fclose(fp);
+	return;
+
 }
 
 //Checking if user is logged in correctly
@@ -147,3 +191,249 @@ int Logging_In(Login user)
 	
 }
 	
+
+Passenger GetPassengerInfo() 
+{
+	Passenger user;//This is to save user input
+
+	printf("\n\nNow adding a passenger\n ");
+	
+	
+
+		bool checker = true;//This is to make sure it resets if false answer is input
+
+
+		int tempPPS = 0;
+
+		do {
+			checker = false;  
+
+			char checkingPPS[250];
+			int ppsCheck;
+
+			//Finding users pps and making sure it is valid
+			printf("What is their PPS number: ");
+			scanf("%d", &tempPPS);
+
+			//reading file to make sure pps is not already in use
+			FILE* fp = fopen("Passenger.txt", "r");
+			if (fp == NULL)
+			{
+				perror("Error opening file");
+				return;
+			}
+
+
+			if (fp != NULL) 
+			{
+				//Making sure user must input a valid pps
+				while (fgets(checkingPPS, sizeof(checkingPPS), fp)) 
+				{
+					sscanf(checkingPPS, "%d,", &ppsCheck);
+					if (tempPPS == ppsCheck) {
+						printf("PPS already in use. Please try again.\n");
+						checker = true; 
+						break;
+					}
+				}
+				fclose(fp);
+			}
+
+		} while (checker == true);
+
+		user.pps = tempPPS;//if pps is valid input it as a proper pps
+
+		//appending so file doesn't erase other ones
+		FILE* fp = fopen("Passenger.txt", "a");
+
+		//Asking user name and surname
+		printf("What is their first name: ");
+		scanf("%s", user.firstName);
+
+		printf("What is their surname: ");
+		scanf("%s", user.surname);
+
+
+		//Asking their birthyear
+		printf("What year were they born: ");
+		scanf_s("%d", &user.birthYear);
+
+
+		//This sequence is to ensure user input a valid email with @ and .com
+		do
+		{
+			checker = true;
+			printf("Users Email address: ");
+			scanf("%s", user.email);
+			if (!strstr(user.email, ".com") || !strstr(user.email, "@"))
+			{
+				printf("Email must contain .com and a @\n");
+				checker = false;
+			}
+
+		} while (checker == false);
+
+		//Inputting as integer to ensure all answers are valid
+		do
+		{
+			checker = true;
+			printf("Where did user travel from \n");
+			printf("1.Dublin \n");
+			printf("2.Leinster \n");
+			printf("3.Connaght \n");
+			printf("4.Ulster \n");
+			printf("5.Munster \n");
+			scanf_s("%d", &user.area);
+			if (user.area < 1 || user.area > 5)
+			{
+				printf("Invalid input must be between 1 and 5\n");
+				checker = false;
+			}
+
+
+		} while (checker == false);
+
+		//checking class with int since only 2 choices so for ease of use
+		do
+		{
+			checker = true;
+			printf("What class \n");
+			printf("1.Economy \n");
+			printf("2.First Class \n");
+			scanf_s("%d", &user.travelClass);
+			if (user.travelClass != 1 && user.travelClass != 2)
+			{
+				printf("Invalid input must be between 1 Economy and 2 first class\n");
+				checker = false;
+			}
+
+
+		} while (checker == false);
+
+		//Checking how many times they travelled
+		do
+		{
+			checker = true;
+			printf("How many times a year do they go?\n");
+			printf("1.Less than three times a year \n");
+			printf("2.Less than five times a year \n");
+			printf("3.More than five times a year \n");
+			scanf_s("%d", &user.tripNum);
+			if (user.tripNum < 1 || user.tripNum >3)
+			{
+				printf("Invalid input must be between 1 and 3\n");
+				checker = false;
+			}
+
+
+		}while (checker == false);
+
+	//Once finished it reads passenger to file to be saved
+	fprintf(fp, "%d %s %s %d %s %d %d %d\n", user.pps, user.firstName, user.surname, user.birthYear, user.email,user.area, user.travelClass, user.tripNum);
+	printf("Process complete\n\n");
+
+	fclose(fp);//closed
+	
+
+	return user;
+}
+
+//If user wishes to see all passengers this can easily read them all
+Passenger ShowAllPassenger()
+{
+	printf("\n\nNow Displaying all passengers\n\n\n");
+
+	FILE* fp = fopen("Passenger.txt", "r");
+	if (fp == NULL)
+	{
+		perror("Error opening Passenger.txt");
+		return;
+	}
+
+	//This is to make sure they are all called to filed
+	int pps;
+	char firstName[50];
+	char surname[50];
+	int birthYear;
+	char email[50];
+	int area;
+	int travelClass;
+	int tripNum;
+
+	//This is to show name of their answer to questions
+	char className[20];
+	char location[20];
+	char timesTravelled[40];
+
+	printf("PASSENGER INFO\n");
+	printf("______________\n\n");
+	//loop to show all passengers
+	while (fscanf(fp, "%d %s %s %d %s %d %d %d", &pps, firstName, surname, &birthYear, email, &area, &travelClass, &tripNum) == 8)
+	{
+		//Inputting the area travelClass and tripNum name to be shown based on their integer then to be read
+		switch (area)
+		{
+		case 1:
+			strcpy(location, "Dublin");
+			break;
+
+		case 2:
+			strcpy(location, "Leinster");
+			break;
+
+		case 3:
+			strcpy(location, "Connacht");
+			break;
+
+		case 4:
+			strcpy(location, "Ulster");
+			break;
+
+		case 5:
+			strcpy(location, "Munster");
+			break;
+		}
+
+
+
+		if (travelClass == 1)
+		{
+			strcpy(className, "Economy");
+		}
+		else
+		{
+			strcpy(className, "First class");
+		}
+
+		switch (tripNum)
+		{
+		case 1:
+			strcpy(timesTravelled, "Less than three times per year");
+			break;
+
+		case 2:
+			strcpy(timesTravelled, "Less than five times per year");
+			break;
+
+		case 3:
+			strcpy(timesTravelled, "More than five times per year");
+			break;
+		}
+
+
+
+		//Reading all out to user in a easily read format
+		printf("PPS: %d \n", pps);
+		printf("Name: %s %s \n", firstName, surname);
+		printf("Date of Birth : %d \n", birthYear);
+		printf("Email : % s \n", email);
+		printf("Coming from : %s \n", location);
+		printf("Class: %s \n", className);
+		printf("Number of trips : %s\n\n\n", timesTravelled);
+	}
+
+	printf("______________\n");
+	printf("All Passenger info shown\n\n");
+	fclose(fp);
+	return;
+}

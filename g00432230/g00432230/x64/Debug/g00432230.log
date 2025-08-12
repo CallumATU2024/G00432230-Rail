@@ -1,3 +1,9 @@
 ﻿  PassengerChecker.c
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(105,3): warning C4098: 'LoginFile': 'void' function returning a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(133,3): warning C4098: 'LoginFile': 'void' function returning a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(154,3): warning C4098: 'PassengerFile': 'void' function returning a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(223,5): warning C4033: 'GetPassengerInfo' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(350,3): warning C4033: 'ShowAllPassenger' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(438,2): warning C4033: 'ShowAllPassenger' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(339,1): warning C4715: 'GetPassengerInfo': not all control paths return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(439,1): warning C4716: 'ShowAllPassenger': must return a value
   g00432230.vcxproj -> C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\x64\Debug\g00432230.exe
