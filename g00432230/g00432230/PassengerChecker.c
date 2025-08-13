@@ -33,6 +33,7 @@ void PassengerFile();//Setting up passenger file if needed
 
 Passenger GetPassengerInfo();//Inputting user info by user
 Passenger ShowAllPassenger();//Showing all passengers to user
+Passenger ShowOnePassengerInfo(const char* username);//Making it to show a specific passenger
 
 
 
@@ -101,6 +102,9 @@ int main()
 			break;
 		case 2:
 			ShowAllPassenger();
+			break;
+		case 3:
+			ShowOnePassengerInfo(user.username);
 			break;
 		case -1:
 			printf("\n\nEnding protocol\n");
@@ -434,6 +438,137 @@ Passenger ShowAllPassenger()
 
 	printf("______________\n");
 	printf("All Passenger info shown\n\n");
+	fclose(fp);
+	return;
+}
+
+
+//Ready one passenger of users request
+Passenger ShowOnePassengerInfo(const char* username)
+{
+
+
+	//Making sure only Admins can access this
+	if (strcmp(username, "Employee") == 0)
+	{
+		printf("Invalid function only Admins allowed \n");
+		return;
+	}
+
+	printf("\n\nNow Displaying passenger details\n");
+
+	//Searching for passenger of users interest
+	int ppsSearch;
+	printf("Which passenger pps would you like to display: ");
+	scanf_s("%d", &ppsSearch);
+
+	FILE* fp = fopen("Passenger.txt", "r");
+	if (fp == NULL)
+	{
+		perror("Error opening file");
+		return;
+	}
+
+	//To be read by computers must all be in file and valid to computers perameters
+	int pps;
+	char firstName[20];
+	char surname[20];
+	int birthYear;
+	char email[50];
+	int area;
+	int travelClass;
+	int tripNum;
+
+	//To show the names of the integers to user
+	char className[20];
+	char location[20];
+	char timesTravelled[40];
+
+	bool found = false;//Checking if passenger found
+
+	//Will remain false so as to keep looking until end of file or passenger found where will end early
+	while (found == false)
+	{
+
+
+		fscanf(fp, "%d %s %s %d %s %d %d %d", &pps, firstName, surname, &birthYear, email, &area, &travelClass, &tripNum);
+
+		if (pps == ppsSearch) //Checking if the pps and ppsSearch match
+		{
+			found = true;
+			//Displaying passenger of their request info
+			printf("\n------------------------\n");
+			printf("PPS: %d\n", pps);
+			printf("First Name: %s\n", firstName);
+			printf("Surname: %s\n", surname);
+			printf("Birth Year: %d\n", birthYear);
+			printf("Email: %s\n", email);
+
+			switch (area)
+			{
+			case 1:
+				strcpy(location, "Dublin");
+				break;
+
+			case 2:
+				strcpy(location, "Leinster");
+				break;
+
+			case 3:
+				strcpy(location, "Connacht");
+				break;
+
+			case 4:
+				strcpy(location, "Ulster");
+				break;
+
+			case 5:
+				strcpy(location, "Munster");
+				break;
+			}
+
+
+
+			if (travelClass == 1)
+			{
+				strcpy(className, "Economy");
+			}
+			else
+			{
+				strcpy(className, "First class");
+			}
+
+			switch (tripNum)
+			{
+			case 1:
+				strcpy(timesTravelled, "Less than three times per year");
+				break;
+
+			case 2:
+				strcpy(timesTravelled, "Less than five times per year");
+				break;
+
+			case 3:
+				strcpy(timesTravelled, "More than five times per year");
+				break;
+			}
+
+
+			printf("Coming from: %s\n", location);
+			printf("Travel Class: %s\n", className);
+			printf("Trip Number: %s\n", timesTravelled);
+			printf("\n------------------------\n\n");
+
+		}
+		else if (!found)
+		{
+			//If not found it will end 
+			printf("No user for pps %d has been located in file\n\n", ppsSearch);
+			return;
+		}
+
+
+	}
 	fclose(fp);
 	return;
 }
