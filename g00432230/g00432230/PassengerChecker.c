@@ -34,6 +34,9 @@ void PassengerFile();//Setting up passenger file if needed
 Passenger GetPassengerInfo();//Inputting user info by user
 Passenger ShowAllPassenger();//Showing all passengers to user
 Passenger ShowOnePassengerInfo(const char* username);//Making it to show a specific passenger
+Passenger ChangeStats(const char* username);
+Passenger Delete();
+
 
 
 
@@ -105,6 +108,12 @@ int main()
 			break;
 		case 3:
 			ShowOnePassengerInfo(user.username);
+			break;
+		case 4:
+			ChangeStats(user.username);
+			break;
+		case 5:
+			Delete();
 			break;
 		case -1:
 			printf("\n\nEnding protocol\n");
@@ -571,4 +580,237 @@ Passenger ShowOnePassengerInfo(const char* username)
 	}
 	fclose(fp);
 	return;
+}
+
+
+//For altering the inputs of the passengers only done my admin
+Passenger ChangeStats(const char* username)
+{
+	//Reading the first passenger to check if they are real
+	FILE* file1 = fopen("Passenger.txt", "r");
+
+	//Then this is where new changes will be put into
+	FILE* file2 = fopen("NewPassenger.txt", "w");
+
+	//Making sure both files are working
+	if (file1 == NULL || file2 == NULL)
+	{
+		perror("Error opening file");
+		return;
+	}
+
+	//This makes sure only Admins i.e manager and owner can use it
+	if (strcmp(username, "Employee") == 0)
+	{
+		printf("Invalid function only Admins allowed \n");
+		return;
+	}
+
+	printf("\n\nNow updating passenger statistics\n");
+
+	int pps;
+	char firstName[20];
+	char surname[20];
+	int birthYear;
+	char email[50];
+	int area;
+	int travelClass;
+	int tripNum;
+	int ppsSearch;
+
+	bool found = false;
+
+	//This is giving user pps for it to search for
+	printf("Enter PPS of the passenger to update: ");
+	scanf("%d", &ppsSearch);
+
+	while (fscanf(file1, "%d %s %s %d %s %d %d %d", &pps, firstName, surname, &birthYear, email, &area, &travelClass, &tripNum) == 8)
+	{
+
+
+		//writing the inputs into the functions to check them and print them if ok
+		fscanf(file1, "%d %s %s %d %s %d %d %d", &pps, firstName, surname, &birthYear, email, &area, &travelClass, &tripNum);
+
+		//This is the users search for pps if it = the results this is one they change
+		if (pps == ppsSearch)
+		{
+			found = true;
+			printf("\n\nuser %d has been found input new info", ppsSearch);
+
+			printf("\n\n----------------------------------------\n\n");
+
+			//New inputs for the changeds stats
+			printf("What is their first name: ");
+			scanf("%s", firstName);
+
+			printf("What is their surname: ");
+			scanf("%s", surname);
+
+
+			printf("What year were they born: ");
+			scanf_s("%d", &birthYear);
+
+			bool checker = true;
+			do
+			{
+				checker = true;
+				printf("Users Email address: ");
+				scanf("%s", email);
+				if (!strstr(email, ".com") || !strstr(email, "@"))
+				{
+					printf("Email must contain .com and a @\n");
+					checker = false;
+				}
+
+			} while (checker == false);
+
+			do
+			{
+				checker = true;
+				printf("Where did user travel from \n");
+				printf("1.Dublin \n");
+				printf("2.Leinster \n");
+				printf("3.Connaght \n");
+				printf("4.Ulster \n");
+				printf("5.Munster \n");
+				scanf_s("%d", &area);
+				if (area < 1 || area > 5)
+				{
+					printf("Invalid input must be between 1 and 5\n");
+					checker = false;
+				}
+
+
+			} while (checker == false);
+
+			do
+			{
+				checker = true;
+				printf("What class \n");
+				printf("1.Economy \n");
+				printf("2.First Class \n");
+				scanf_s("%d", &travelClass);
+				if (travelClass != 1 && travelClass != 2)
+				{
+					printf("Invalid input must be between 1 Economy and 2 first class\n");
+					checker = false;
+				}
+
+
+			} while (checker == false);
+
+			do
+			{
+				checker = true;
+				printf("What class \n");
+				printf("1.Less than three times a year \n");
+				printf("2.Less than five times a year \n");
+				printf("3.More than five times a year \n");
+				scanf_s("%d", &tripNum);
+				if (tripNum < 1 || tripNum >3)
+				{
+					printf("Invalid input must be between 1 and 3\n");
+					checker = false;
+				}
+
+
+			} while (checker == false);
+
+			//Writes the results iunto file 2 whether normal or altered
+			fprintf(file2, "%d %s %s %d %s %d %d %d\n", pps, firstName, surname, birthYear, email, area, travelClass, tripNum);
+
+			printf("\n\n----------------------------------------\n\n");
+		}
+		else
+		{
+			fprintf(file2, "%d %s %s %d %s %d %d %d\n", pps, firstName, surname, birthYear, email, area, travelClass, tripNum);
+		}
+
+		//When finished writing/reading closing both files
+		fclose(file1);
+		fclose(file2);
+
+		//This checks if passenger has been found or not if it has been found NewPassenger replaces the original and if it is not found then NewPassenger is removed
+		if (!found)
+		{
+			remove("NewPassenger.txt");
+			printf("No user for pps %d has been located in file\n\n", ppsSearch);
+			return;
+		}
+		else if (found)
+		{
+			remove("Passenger.txt");
+			rename("NewPassenger.txt", "Passenger.txt");
+
+		}
+
+	}
+
+}
+
+//This is to delete a passenger from list based on pps
+Passenger Delete()
+{
+	printf("\n\nNow deleting a passenger\n");
+	//Reads passenger so as to check if passenger is in it
+	FILE* file1 = fopen("Passenger.txt", "r");
+
+	//This will replace the original if it is used
+	FILE* file2 = fopen("NewPassenger.txt", "w");
+
+	//Make sure both files are ok
+	if (file1 == NULL || file2 == NULL)
+	{
+		perror("Error opening file");
+		return;
+	}
+
+	int ppsSearch;
+
+	//Searching for user pps for if needed//
+	printf("Input pps of user you wish to delete: ");
+	scanf("%d", &ppsSearch);
+
+	int pps;
+	char firstName[20];
+	char surname[20];
+	int birthYear;
+	char email[50];
+	int area;
+	int travelClass;
+	int tripNum;
+
+	//Making it so we know if user is found or not to know if passenger has been found
+	bool found = false;
+
+	while (fscanf(file1, "%d %s %s %d %s %d %d %d", &pps, firstName, surname, &birthYear, email, &area, &travelClass, &tripNum) == 8)
+	{
+
+		//This says if passenger is equal to the searched pps it will delete passenger by skipping them in file 2
+		if (pps == ppsSearch)
+		{
+			printf("\nUser %d has been deleted\n\n", ppsSearch);
+			found = true;
+			continue;
+		}
+
+		// If passenger is not found it will print it to new file
+		fprintf(file2, "%d %s %s %d %s %d %d %d\n", pps, firstName, surname, birthYear, email, area, travelClass, tripNum);
+	}
+
+	fclose(file1);
+	fclose(file2);
+
+	//Erase new passenge if passenger is not found
+	if (!found)
+	{
+		remove("NewPassenger.txt");
+		printf("No user for PPS %d found in file.\n\n", ppsSearch);
+	}
+	//Replace Passenger with new Passenger if found
+	else
+	{
+		remove("Passenger.txt");
+		rename("NewPassenger.txt", "Passenger.txt");
+	}
 }
