@@ -24,18 +24,23 @@ typedef struct Passenger//Declaring everything that will be used and saved for P
 }Passenger;
 
 bool FileExists(const char* filename);//Checking if the file exists
+bool GenStats(float stats[5]);//Generating the statistics to be shown 
+
 
 int Logging_In(Login user);//Making login file with all the passwords/username
 
 void LoginFile();//File used 
 void PassengerFile();//Setting up passenger file if needed
+void ShowStats();//Shows the stats separately so gen can be reused
 
 
 Passenger GetPassengerInfo();//Inputting user info by user
 Passenger ShowAllPassenger();//Showing all passengers to user
 Passenger ShowOnePassengerInfo(const char* username);//Making it to show a specific passenger
 Passenger ChangeStats(const char* username);
-Passenger Delete();
+Passenger Delete();//Deleting a user
+Passenger Report();//Making a report to make report file and save it
+
 
 
 
@@ -53,7 +58,9 @@ int main()
 		PassengerFile(); 
 	}
 
-	int count = 0;
+	int count = 0;//Counting
+	float stats[5];//Used so as to generate stats for use on other needs
+
 	bool checker = true;//Used to make sure user doesn't make a incorrect decision
 	Login user;//This is how user will input new data
 
@@ -114,6 +121,13 @@ int main()
 			break;
 		case 5:
 			Delete();
+			break;
+		case 6:
+			GenStats(stats);
+			ShowStats();//This is so genStats can be reused
+			break;
+		case 7:
+			Report();
 			break;
 		case -1:
 			printf("\n\nEnding protocol\n");
@@ -813,4 +827,214 @@ Passenger Delete()
 		remove("Passenger.txt");
 		rename("NewPassenger.txt", "Passenger.txt");
 	}
+}
+
+//This is used to find the statistics on howm any passengers input which area they are coming from
+bool GenStats(float stats[5])
+{
+	//Reading file to find the statistics
+	FILE* fp = fopen("Passenger.txt", "r");
+	if (fp == NULL)
+	{
+		perror("Error opening file");
+		return;
+	}
+
+	//All must be read to ensure no errors occur
+	int pps;
+	char firstName[20];
+	char surname[20];
+	int birthYear;
+	char email[50];
+	int area;
+	int travelClass;
+	int tripNum;
+
+	//Using 5 as a way to save space 
+	int fromTotal[5] = { 0 };
+	int total = 0;
+
+	//Checking each area they are from 
+	while (fscanf(fp, "%d %s %s %d %s %d %d %d", &pps, firstName, surname, &birthYear, email, &area, &travelClass, &tripNum) == 8)
+	{
+
+		//checks what their choice of the 5 locations was aswell as adding up total each time so as to check what percentage wise it is
+		switch (area)
+		{
+		case 1:
+			fromTotal[0]++;
+			total++;
+			break;
+		case 2:
+			fromTotal[1]++;
+			total++;
+			break;
+		case 3:
+			fromTotal[2]++;
+			total++;
+			break;
+		case 4:
+			fromTotal[3]++;
+			total++;
+			break;
+		case 5:
+			fromTotal[4]++;
+			total++;
+			break;
+		}
+	}
+
+	//Calculating the percentage
+	for (int i = 0; i < 5; i++)
+	{
+		stats[i] = ((float)fromTotal[i] / total) * 100;
+	}
+
+	if (total == 0)//Checking if there are no stats to use
+	{
+		return false;
+	}
+	//Closing file and finishing
+	fclose(fp);
+	return true;
+}
+
+
+//This is seperate to showcase the stats so that genStats can be reused
+void ShowStats()
+{
+	//Bringing overthe stats from genStats for reuse
+	float stats[5];
+	GenStats(stats);
+	if (!GenStats(stats))
+	{
+		printf("\nNo Passengers found\n");
+		return;//Makes sure that if there are no passengers it will not declare
+	}
+
+	//Declaring the 5 choices for affective use
+	char* areasFrom[5] = { "Dublin", "Leinster", "Connacht", "Ulster", "Munster" };
+
+	printf("\n\nNow showing passenger statistics\n\n");
+	printf("\n--------------------------------------\n");
+	for (int i = 0; i < 5; i++)
+	{
+		//Done in a loop for ease
+		printf("%.1f%% of passengers are from %s \n", stats[i], areasFrom[i]);
+	}
+
+	printf("\n--------------------------------------\n");
+	return;
+}
+
+Passenger Report()
+{
+	//Reading passenger file and adding the info to reports
+	FILE* file1 = fopen("Passenger.txt", "r");
+	FILE* file2 = fopen("reports.txt", "w");
+
+
+	//Ensure both files are ok
+	if (file1 == NULL || file2 == NULL)
+	{
+		perror("Error opening file");
+		return;
+	}
+
+	int pps;
+	char firstName[20];
+	char surname[20];
+	int birthYear;
+	char email[50];
+	int area;
+	int travelClass;
+	int tripNum;
+
+	char location[20];
+	char className[20];
+	char timesTravelled[40];
+	char* areasFrom[5] = { "Dublin", "Leinster", "Connacht", "Ulster", "Munster" };
+
+	//Reading all of the info from
+	while (fscanf(file1, "%d %s %s %d %s %d %d %d", &pps, firstName, surname, &birthYear, email, &area, &travelClass, &tripNum) == 8)
+	{
+		//Making the reports file more readable for user
+		switch (area)
+		{
+		case 1:
+			strcpy(location, "Dublin");
+			break;
+
+		case 2:
+			strcpy(location, "Leinster");
+			break;
+
+		case 3:
+			strcpy(location, "Connacht");
+			break;
+
+		case 4:
+			strcpy(location, "Ulster");
+			break;
+
+		case 5:
+			strcpy(location, "Munster");
+			break;
+		}
+
+
+
+		if (travelClass == 1)
+		{
+			strcpy(className, "Economy");
+		}
+		else
+		{
+			strcpy(className, "First class");
+		}
+
+		switch (tripNum)
+		{
+		case 1:
+			strcpy(timesTravelled, "Less than three times per year");
+			break;
+
+		case 2:
+			strcpy(timesTravelled, "Less than five times per year");
+			break;
+
+		case 3:
+			strcpy(timesTravelled, "More than five times per year");
+			break;
+		}
+
+		//Writing all into the reports file
+		fprintf(file2, "\n------------------------\n");
+		fprintf(file2, "PPS: %d\n", pps);
+		fprintf(file2, "First Name: %s\n", firstName);
+		fprintf(file2, "Surname: %s\n", surname);
+		fprintf(file2, "Birth Year: %d\n", birthYear);
+		fprintf(file2, "Email: %s\n", email);
+		fprintf(file2, "Coming from: %s\n", location);
+		fprintf(file2, "Travel Class: %s\n", className);
+		fprintf(file2, "Trip Number: %s\n", timesTravelled);
+		fprintf(file2, "\n------------------------\n\n");
+
+	}
+
+	//get the statistics needed for reports even if it has not been displayed
+	float stats[5];
+	GenStats(stats);
+	//printing the results to the reports file
+	for (int i = 0; i < 5; i++)
+	{
+		fprintf(file2, "%.1f%% of passengers are from %s \n", stats[i], areasFrom[i]);
+	}
+
+	//Finishing off reports file
+	printf("\n reports file has been generated\n\n");
+
+	//closing files now that it is finished
+	fclose(file1);
+	fclose(file2);
 }

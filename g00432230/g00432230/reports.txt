@@ -1,0 +1,18 @@
+
+------------------------
+PPS: 1
+First Name: Callum
+Surname: Stewart
+Birth Year: 2004
+Email: Callum@atu.com
+Coming from: Connacht
+Travel Class: Economy
+Trip Number: Less than five times per year
+
+------------------------
+
+0.0% of passengers are from Dublin 
+0.0% of passengers are from Leinster 
+100.0% of passengers are from Connacht 
+0.0% of passengers are from Ulster 
+0.0% of passengers are from Munster 
