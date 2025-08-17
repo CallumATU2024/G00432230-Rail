@@ -28,6 +28,8 @@ bool GenStats(float stats[5]);//Generating the statistics to be shown
 
 
 int Logging_In(Login user);//Making login file with all the passwords/username
+int IncreasePassengerAmount(Passenger** array, int* capacity);//This is to add more to the maximum passengers
+int compareBirthYear(const void* a, const void* b);//Used to check which person is youngest-oldest
 
 void LoginFile();//File used 
 void PassengerFile();//Setting up passenger file if needed
@@ -40,6 +42,7 @@ Passenger ShowOnePassengerInfo(const char* username);//Making it to show a speci
 Passenger ChangeStats(const char* username);
 Passenger Delete();//Deleting a user
 Passenger Report();//Making a report to make report file and save it
+Passenger PassengerYear();//Checking passengers by their age
 
 
 
@@ -128,6 +131,9 @@ int main()
 			break;
 		case 7:
 			Report();
+			break;
+		case 8:
+			PassengerYear();
 			break;
 		case -1:
 			printf("\n\nEnding protocol\n");
@@ -1037,4 +1043,214 @@ Passenger Report()
 	//closing files now that it is finished
 	fclose(file1);
 	fclose(file2);
+}
+
+//For checking how many Passengers are for max
+Passenger* CheckAmount(int* count)
+{
+	FILE* fp = fopen("Passenger.txt", "r");//opening file
+	if (fp == NULL) //If null can reset over cause a error
+	{
+		perror("Error opening file");
+		return NULL;
+	}
+
+	Passenger* passengerAmount = NULL;//Sets it at null in the sert 
+	int capacity = 0;
+	*count = 0;//The count and capacity start at 0
+
+	while (1)
+	{
+		if (*count == capacity) //Checking how close
+		{
+			if (!IncreasePassengerAmount(&passengerAmount, &capacity)) //Checking to increase Passenger max quality
+			{
+				free(passengerAmount);
+				fclose(fp);
+				return NULL;
+			}
+		}
+
+		//Reading  all fields to check it
+		int fieldsRead = fscanf(fp, "%d %19s %19s %d %49s %d %d %d", &passengerAmount[*count].pps, passengerAmount[*count].firstName, passengerAmount[*count].surname, &passengerAmount[*count].birthYear, passengerAmount[*count].email, &passengerAmount[*count].area, &passengerAmount[*count].travelClass, &passengerAmount[*count].tripNum);
+
+		//finish if reached end of files
+		if (fieldsRead == EOF) {
+			break;
+		}
+
+		//Makes sure if line is invalid
+		if (fieldsRead != 8) {
+			fprintf(stderr, "Invalid data format at line %d\n", *count + 1);
+			int c;
+			while ((c = fgetc(fp)) != '\n' && c != EOF);  // discard invalid line
+			continue;
+		}
+
+		//count goes up in end
+		(*count)++;
+	}
+
+	fclose(fp);
+	return passengerAmount;//Returning passengerAmount to check
+}
+
+//Used to increase Passenger size if needed
+int IncreasePassengerAmount(Passenger** array, int* capacity)
+{
+	int newCapacity = (*capacity == 0) ? 10 : (*capacity * 2);//Makes the new capacity go up
+	Passenger* temp = realloc(*array, newCapacity * sizeof(Passenger));//Resizing the array of passengers
+	if (temp == NULL)
+	{
+		perror("Memory allocation failed");
+		return 0; // failure
+	}
+	*array = temp;//Making it equal temp if finished
+	*capacity = newCapacity;//Making the capacity equal new capacity if succeeded and no return
+	return 1; // success
+}
+
+//This is to show the passengers based of the year they were born oldest to youngest
+Passenger PassengerYear() {
+
+	printf("\n\nNow showing passengers by their date of birth\n\n");
+	FILE* fp = fopen("Passenger.txt", "r");
+	if (fp == NULL) {
+		perror("Error opening file");
+		exit(1); // cannot return a Passenger if file fails
+	}
+
+	//checking how many are in passenger file and if needed will increase during the count
+	Passenger* passengers = NULL;
+	int count = 0;
+	int capacity = 0;
+
+	char className[20];
+	char location[20];
+	char timesTravelled[40];
+
+	//function checking how many passengers are there and adding them to the total count aswell as increasing the capacity it is needed to
+	while (1)
+	{
+		//
+		if (count == capacity)
+		{
+			//ensures passenger count goes up any time it gets equal to passengers so as to not waste space
+			if (!IncreasePassengerAmount(&passengers, &capacity))
+			{
+				fclose(fp);
+				exit(1);
+			}
+		}
+
+		//Scanning all passengers and adding them to count
+		int fields = fscanf(fp, "%d %19s %19s %d %49s %d %d %d", &passengers[count].pps, passengers[count].firstName, passengers[count].surname, &passengers[count].birthYear, passengers[count].email, &passengers[count].area, &passengers[count].travelClass, &passengers[count].tripNum);
+
+		//If file has nothing to read it will end file and go to next function
+		if (fields == EOF)
+		{
+			break;
+		}
+		//if passenger is there it will increase count
+		if (fields == 8)
+		{
+			count++;
+		}
+	}
+
+	fclose(fp);
+
+	//If there are no passengers in count it will end function
+	if (count == 0)
+	{
+		fprintf(stderr, "No passengers found.\n");
+		exit(1);
+	}
+
+	//This runs so as to compare the passengers years and sort them so it goes oldest to youngest
+	qsort(passengers, count, sizeof(Passenger), compareBirthYear);
+
+	Passenger oldest = passengers[0];  // earliest birthYear
+
+	//Declarations for user legibility
+	for (int i = 0; i < count; i++)
+	{
+		switch (passengers[i].area)
+		{
+		case 1:
+			strcpy(location, "Dublin");
+			break;
+
+		case 2:
+			strcpy(location, "Leinster");
+			break;
+
+		case 3:
+			strcpy(location, "Connacht");
+			break;
+
+		case 4:
+			strcpy(location, "Ulster");
+			break;
+
+		case 5:
+			strcpy(location, "Munster");
+			break;
+		}
+
+
+
+		if (passengers[i].travelClass == 1)
+		{
+			strcpy(className, "Economy");
+		}
+		else
+		{
+			strcpy(className, "First class");
+		}
+
+		switch (passengers[i].tripNum)
+		{
+		case 1:
+			strcpy(timesTravelled, "Less than three times per year");
+			break;
+
+		case 2:
+			strcpy(timesTravelled, "Less than five times per year");
+			break;
+
+		case 3:
+			strcpy(timesTravelled, "More than five times per year");
+			break;
+		}
+
+
+
+		//Print results ordered correctly
+		printf("\n------------------------\n");
+		printf("PPS: %d \n", passengers[i].pps);
+		printf("Name: %s %s \n", passengers[i].firstName, passengers[i].surname);
+		printf("Date of Birth : %d \n", passengers[i].birthYear);
+		printf("Email : % s \n", passengers[i].email);
+		printf("Coming from : %s \n", location);
+		printf("Class: %s \n", className);
+		printf("Number of trips : %s\n\n\n", timesTravelled);
+		printf("\n------------------------\n\n");
+	}
+
+	//Puts passengers back in correct places after function
+	free(passengers);
+	return;
+
+
+}
+
+//This is where we go to find the year difference in the passengers 
+int compareBirthYear(const void* a, const void* b)
+{
+	//reads both passengers and checks them both
+	Passenger* file1 = (Passenger*)a;
+	Passenger* file2 = (Passenger*)b;
+	//Will then return the passengers it has found
+	return file1->birthYear - file2->birthYear;
 }

@@ -1,24 +1,27 @@
 ﻿  PassengerChecker.c
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(160,3): warning C4098: 'LoginFile': 'void' function returning a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(181,3): warning C4098: 'PassengerFile': 'void' function returning a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(250,5): warning C4033: 'GetPassengerInfo' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(377,3): warning C4033: 'ShowAllPassenger' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(465,2): warning C4033: 'ShowAllPassenger' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(478,3): warning C4033: 'ShowOnePassengerInfo' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(492,3): warning C4033: 'ShowOnePassengerInfo' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(590,4): warning C4033: 'ShowOnePassengerInfo' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(596,2): warning C4033: 'ShowOnePassengerInfo' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(613,3): warning C4033: 'ChangeStats' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(620,3): warning C4033: 'ChangeStats' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(752,4): warning C4033: 'ChangeStats' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(779,3): warning C4033: 'Delete' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(840,3): warning C4033: 'GenStats' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(941,3): warning C4033: 'Report' must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(366,1): warning C4715: 'GetPassengerInfo': not all control paths return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(466,1): warning C4716: 'ShowAllPassenger': must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(830,1): warning C4716: 'Delete': must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(1040,1): warning C4716: 'Report': must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(763,1): warning C4716: 'ChangeStats': must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(597,1): warning C4716: 'ShowOnePassengerInfo': must return a value
-C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(900,1): warning C4715: 'GenStats': not all control paths return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(166,3): warning C4098: 'LoginFile': 'void' function returning a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(187,3): warning C4098: 'PassengerFile': 'void' function returning a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(256,5): warning C4033: 'GetPassengerInfo' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(383,3): warning C4033: 'ShowAllPassenger' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(471,2): warning C4033: 'ShowAllPassenger' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(484,3): warning C4033: 'ShowOnePassengerInfo' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(498,3): warning C4033: 'ShowOnePassengerInfo' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(596,4): warning C4033: 'ShowOnePassengerInfo' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(602,2): warning C4033: 'ShowOnePassengerInfo' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(619,3): warning C4033: 'ChangeStats' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(626,3): warning C4033: 'ChangeStats' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(758,4): warning C4033: 'ChangeStats' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(785,3): warning C4033: 'Delete' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(846,3): warning C4033: 'GenStats' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(947,3): warning C4033: 'Report' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(1243,2): warning C4033: 'PassengerYear' must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(1173,12): warning C4101: 'oldest': unreferenced local variable
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(372,1): warning C4715: 'GetPassengerInfo': not all control paths return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(472,1): warning C4716: 'ShowAllPassenger': must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(603,1): warning C4716: 'ShowOnePassengerInfo': must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(769,1): warning C4716: 'ChangeStats': must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(836,1): warning C4716: 'Delete': must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(906,1): warning C4715: 'GenStats': not all control paths return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(1046,1): warning C4716: 'Report': must return a value
+C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\g00432230\PassengerChecker.c(1246,1): warning C4715: 'PassengerYear': not all control paths return a value
   g00432230.vcxproj -> C:\Users\callu\OneDrive - Atlantic TU\Year_2\Advanced procredural\Autumn-Project\g00432230\x64\Debug\g00432230.exe
