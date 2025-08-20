@@ -34,14 +34,17 @@ int compareBirthYear(const void* a, const void* b);//Used to check which person 
 void LoginFile();//File used 
 void PassengerFile();//Setting up passenger file if needed
 void ShowStats();//Shows the stats separately so gen can be reused
+void Delete();//Deleting a user
+void ChangeStats(const char* username);//Altering the user of our choice
+void Report();//Making a report to make report file and save it
 
 
 Passenger GetPassengerInfo();//Inputting user info by user
 Passenger ShowAllPassenger();//Showing all passengers to user
 Passenger ShowOnePassengerInfo(const char* username);//Making it to show a specific passenger
-Passenger ChangeStats(const char* username);
-Passenger Delete();//Deleting a user
-Passenger Report();//Making a report to make report file and save it
+
+
+
 Passenger PassengerYear();//Checking passengers by their age
 
 
@@ -589,22 +592,23 @@ Passenger ShowOnePassengerInfo(const char* username)
 			printf("\n------------------------\n\n");
 
 		}
-		else if (!found)
-		{
-			//If not found it will end 
-			printf("No user for pps %d has been located in file\n\n", ppsSearch);
-			return;
-		}
+		
 
 
 	}
+	if (!found)
+	{
+		//If not found it will end 
+		printf("No user for pps %d has been located in file\n\n", ppsSearch);
+		return;
+		}
 	fclose(fp);
 	return;
 }
 
 
 //For altering the inputs of the passengers only done my admin
-Passenger ChangeStats(const char* username)
+void ChangeStats(const char* username)
 {
 	//Reading the first passenger to check if they are real
 	FILE* file1 = fopen("Passenger.txt", "r");
@@ -643,13 +647,9 @@ Passenger ChangeStats(const char* username)
 	//This is giving user pps for it to search for
 	printf("Enter PPS of the passenger to update: ");
 	scanf("%d", &ppsSearch);
-
+	//writing the inputs into the functions to check them and print them if ok
 	while (fscanf(file1, "%d %s %s %d %s %d %d %d", &pps, firstName, surname, &birthYear, email, &area, &travelClass, &tripNum) == 8)
 	{
-
-
-		//writing the inputs into the functions to check them and print them if ok
-		fscanf(file1, "%d %s %s %d %s %d %d %d", &pps, firstName, surname, &birthYear, email, &area, &travelClass, &tripNum);
 
 		//This is the users search for pps if it = the results this is one they change
 		if (pps == ppsSearch)
@@ -744,32 +744,31 @@ Passenger ChangeStats(const char* username)
 		else
 		{
 			fprintf(file2, "%d %s %s %d %s %d %d %d\n", pps, firstName, surname, birthYear, email, area, travelClass, tripNum);
-		}
-
-		//When finished writing/reading closing both files
-		fclose(file1);
-		fclose(file2);
-
-		//This checks if passenger has been found or not if it has been found NewPassenger replaces the original and if it is not found then NewPassenger is removed
-		if (!found)
-		{
-			remove("NewPassenger.txt");
-			printf("No user for pps %d has been located in file\n\n", ppsSearch);
-			return;
-		}
-		else if (found)
-		{
-			remove("Passenger.txt");
-			rename("NewPassenger.txt", "Passenger.txt");
-
-		}
+		}		
 
 	}
 
+	//When finished writing/reading closing both files
+	fclose(file1);
+	fclose(file2);
+
+	//This checks if passenger has been found or not if it has been found NewPassenger replaces the original and if it is not found then NewPassenger is removed
+	if (!found)
+	{
+		remove("NewPassenger.txt");
+		printf("No user for pps %d has been located in file\n\n", ppsSearch);
+		return;
+	}
+	else if (found)
+	{
+		remove("Passenger.txt");
+		rename("NewPassenger.txt", "Passenger.txt");
+
+	}
 }
 
 //This is to delete a passenger from list based on pps
-Passenger Delete()
+void Delete()
 {
 	printf("\n\nNow deleting a passenger\n");
 	//Reads passenger so as to check if passenger is in it
@@ -933,7 +932,7 @@ void ShowStats()
 	return;
 }
 
-Passenger Report()
+void Report()
 {
 	//Reading passenger file and adding the info to reports
 	FILE* file1 = fopen("Passenger.txt", "r");
